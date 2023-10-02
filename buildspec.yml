@@ -1,0 +1,69 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --no-include-email)
+
+  install:
+    runtime-versions:
+      java: corretto17
+
+  build:
+    commands:
+      # - java -version
+      - java -jar blind-jobs-0.0.1-SNAPSHOT.jar
+
+
+      # - ./gradlew build
+
+
+
+      # - ./gradlew build
+      - echo Building the Docker image...
+
+  # post_build:
+    # finally:
+    #   - rm -f /root/.gradle/caches/modules-2/modules-2.lock
+    #   - rm -f /root/.gradle/caches/*/plugin-resolution/
+    # commands:
+    #   - echo Build completed on `date`
+    #   - echo Pushing the Docker images...
+
+
+
+
+
+    #   - ls
+    #   # # - ./gradlew clean
+    #   # - ls
+    #   # - cd build
+    #   # - ls
+    #   # - cd libs
+    #   # - ls
+    #   - echo Build completed successfully
+
+
+
+      # # - java -jar blind-jobs-0.0.1-SNAPSHOT.jar
+
+#############################################
+# artifacts:
+#   files: 
+#     # - build/libs/blind-jobs-0.0.1-SNAPSHOT.jar
+#     - '*-SNAPSHOT.jar'
+#   #   - imagedefinitions.json
+#   base-directory: 'build/libs'
+# reports:
+      # test-report-group: #Junit reports
+        # files:
+        #   - 'TEST-boris.maths.MathsApplicationTests.xml'
+        #discard-paths: false #do not remove file paths from test result files
+        # base-directory: './build/test-results/test'
+###############################################
+
+
+
+# comandos que tem o - na frente é os que são executados no console

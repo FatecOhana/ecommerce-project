@@ -1,0 +1,25 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+
+  datasource:
+    url: jdbc:h2:file:./database/dev/backup_data;MODE=MySQL
+    username: OmyCaroSeRaC
+    password: UaTgEe0M6b&95jj^u8*x
+    driverClassName: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+logging.file:
+  path: ./home/user
+  name: my.log
+
+server.port: 8090
+
+springdoc.show-actuator: true

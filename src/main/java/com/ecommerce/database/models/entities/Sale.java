@@ -1,0 +1,46 @@
+package com.ecommerce.database.models.entities;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@Table(name = "sale")
+public class Sale {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
+    private Integer customerId;
+    private Integer status;
+
+    private LocalDateTime paymentDate;
+    private LocalDateTime emissionDate;
+    private LocalDateTime approvalDate;
+    private LocalDateTime transportDate;
+    private LocalDateTime deliveryDate;
+
+    private String deliveryType;
+    private Float deliveryPrice;
+
+    private String obs;
+
+    private String paymentType;
+    private String paymentDiscount;
+    private Integer installmentPayment;
+
+    private Float total;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+}

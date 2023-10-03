@@ -1,17 +1,18 @@
 package com.ecommerce.restendpoints;
 
-import com.ecommerce.database.models.entities.User;
+import com.ecommerce.database.models.entities.SaleItem;
 import com.ecommerce.dto.OperationData;
+import com.ecommerce.dto.Payload;
+import com.ecommerce.dto.SaleDTO;
 import com.ecommerce.dto.SingleItemPayload;
 import com.ecommerce.dto.command.DeleteItemCommand;
 import com.ecommerce.dto.command.FindItemByParameterCommand;
 import com.ecommerce.dto.command.UpsertItemCommand;
-import com.ecommerce.dto.types.UserType;
-import com.ecommerce.services.UserServiceV2;
+import com.ecommerce.dto.command.UpsertItemsCommand;
+import com.ecommerce.services.SaleService;
 import com.ecommerce.utils.UtilsOperation;
 import com.ecommerce.utils.UtilsValidation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,18 +28,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "User", description = "Endpoint to manipulate and manage users and their data")
-public class UserRestEndpointV2 {
+@Tag(name = "Sale", description = "Endpoint to manipulate and manage sales and their data")
+public class SaleRestEndpoint {
 
-    private final UserServiceV2 userService;
+    private final SaleService saleService;
 
-    public UserRestEndpointV2(UserServiceV2 userService) {
-        this.userService = userService;
+    public SaleRestEndpoint(SaleService saleService) {
+        this.saleService = saleService;
     }
 
     // TODO: Create example object not in hardcode
-    @Operation(summary = "Create or Update Users values",
-            description = "If you pass the ID and there is a Users in the corresponding database, it will be updated",
+    @Operation(summary = "Create or Update Sales values",
+            description = "If you pass the ID and there is a Sales in the corresponding database, it will be updated",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     examples = {
@@ -51,7 +52,7 @@ public class UserRestEndpointV2 {
                                                     "name": "Gabriel Olae",
                                                     "identifierName": "GAB_OL4e",
                                                     "isDeleted": false,
-                                                    "userType": "ESTUDANTE",
+                                                    "saleType": "ESTUDANTE",
                                                     "contactNumber": "115984928470",
                                                     "email": "gabriel@email.com",
                                                     "password": "gabriel852109712",
@@ -69,7 +70,7 @@ public class UserRestEndpointV2 {
                                                     "name": "Nest",
                                                     "identifierName": "NEST_ENTERPRISE",
                                                     "isDeleted": false,
-                                                    "userType": "EMPRESA",
+                                                    "saleType": "EMPRESA",
                                                     "contactNumber": "119284928470",
                                                     "contactEmail": "nestRecruiter@email.com",
                                                     "email": "nestCorp@email.com",
@@ -82,67 +83,63 @@ public class UserRestEndpointV2 {
                     }
             ))
     )
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Users Created or Updated", content = @Content(
+    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Sales Created or Updated", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
-    @PostMapping(value = "api/v1/user", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<OperationData<?>> upsertUser(
-            @RequestBody SingleItemPayload<User> userPayload
+    @PostMapping(value = "api/v1/sale", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<OperationData<?>> upsertSale(
+            @RequestBody SingleItemPayload<SaleDTO> salePayload
     ) throws Exception {
-        UpsertItemCommand<User> command = UpsertItemCommand.<User>builder().data(userPayload).build();
-        return new ResponseEntity<>(userService.upsertRegister(command), HttpStatus.OK);
+        UpsertItemCommand<SaleDTO> command = UpsertItemCommand.<SaleDTO>builder().data(salePayload).build();
+        return new ResponseEntity<>(saleService.upsertRegisterV2(command), HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete (Soft-Delete) one Users", description = "You only need to enter the Users's ID in the request body")
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Users Deleted", content = @Content(
+    @Operation(summary = "Delete (Soft-Delete) one Sales", description = "You only need to enter the Sales's ID in the request body")
+    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Sales Deleted", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
-    @DeleteMapping(value = "api/v1/user", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<OperationData<?>> softDeleteUser(
-            @RequestBody SingleItemPayload<UUID> userPayload
+    @DeleteMapping(value = "api/v1/sale", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<OperationData<?>> softDeleteSale(
+            @RequestBody SingleItemPayload<UUID> salePayload
     ) throws Exception {
-        DeleteItemCommand command = DeleteItemCommand.builder().id(UtilsValidation.ifNull(userPayload, new SingleItemPayload<UUID>()).getData()).build();
-        return new ResponseEntity<>(userService.softDeleteRegister(command), HttpStatus.OK);
+        DeleteItemCommand command = DeleteItemCommand.builder().id(UtilsValidation.ifNull(salePayload, new SingleItemPayload<UUID>()).getData()).build();
+        return new ResponseEntity<>(saleService.softDeleteRegister(command), HttpStatus.OK);
     }
 
-    @Operation(summary = "Get database user values", description = "You must enter one of the filter values")
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Matching  user values", content = @Content(
+    @Operation(summary = "Get database sale values", description = "You must enter one of the filter values")
+    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Matching  sale values", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
-    @GetMapping(value = "api/v1/user", produces = "application/json")
-    public ResponseEntity<OperationData<?>> getUser(
+    @GetMapping(value = "api/v1/sale", produces = "application/json")
+    public ResponseEntity<OperationData<?>> getSale(
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String uniqueName,
             @RequestParam(required = false) String name,
-            @Parameter(description = "UserType value of users that will be searched", name = "userType",
-                    schema = @Schema(implementation = UserType.class)) @RequestParam UserType userType,
             @RequestParam(required = false) boolean isDeleted
     ) throws Exception {
         UUID uuid = UtilsOperation.convertStringToUUID(id);
         FindItemByParameterCommand find = FindItemByParameterCommand.builder()
-                .id(uuid).name(name).uniqueKey(uniqueName).type(userType).isDeleted(isDeleted)
+                .id(uuid).name(name).uniqueKey(uniqueName).isDeleted(isDeleted)
                 .build();
-        return new ResponseEntity<>(userService.findRegister(find), HttpStatus.OK);
+        return new ResponseEntity<>(saleService.findRegister(find), HttpStatus.OK);
     }
 
     // TODO ALLOW ONLY FOR MASTER ADMIN
-    @Operation(summary = "Get all user values in database", description = "This method is only allowed for debug")
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "All Users Registers", content = @Content(
+    @Operation(summary = "Get all sale values in database", description = "This method is only allowed for debug")
+    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "All Sales Registers", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
-    @GetMapping(value = "api/v1/user/all", produces = "application/json")
-    public ResponseEntity<OperationData<?>> getAllUser() throws Exception {
-        return new ResponseEntity<>(userService.findAllRegister(), HttpStatus.OK);
+    @GetMapping(value = "api/v1/sale/all", produces = "application/json")
+    public ResponseEntity<OperationData<?>> getAllSale() throws Exception {
+        return new ResponseEntity<>(saleService.findAllRegister(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Get all User Jobs", description = "if UserType is EMPRESA, all candidatures for the company " +
-            "will be displayed. But if UserType is ESTUDANTE, all candidatures of student will be displayed")
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "All User candidatures", content = @Content(
+    @Operation(summary = "Get all Sale Jobs", description = "if SaleType is EMPRESA, all candidatures for the company " +
+            "will be displayed. But if SaleType is ESTUDANTE, all candidatures of student will be displayed")
+    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "All Sale candidatures", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
-    @GetMapping(value = "api/v1/user/job", produces = "application/json")
-    public ResponseEntity<OperationData<?>> getAllUserCandidatures(
+    @GetMapping(value = "api/v1/sale/job", produces = "application/json")
+    public ResponseEntity<OperationData<?>> getAllSaleCandidatures(
             @RequestParam(required = false) String id, @RequestParam(required = false) String uniqueName,
-            @RequestParam(required = false) String name, @RequestParam(required = false) boolean isDeleted,
-            @Parameter(name = "userType", required = true, schema = @Schema(implementation = UserType.class),
-                    description = "UserType value of users that will be searched") @RequestParam UserType userType
+            @RequestParam(required = false) String name, @RequestParam(required = false) boolean isDeleted
     ) throws Exception {
-        throw new NotImplementedException("Not implemented getAllUserCandidatures");
+        throw new NotImplementedException("Not implemented getAllSaleCandidatures");
     }
 
 }

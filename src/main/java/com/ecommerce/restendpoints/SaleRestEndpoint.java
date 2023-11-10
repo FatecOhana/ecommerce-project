@@ -62,15 +62,12 @@ public class SaleRestEndpoint {
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
     @GetMapping(value = "api/v1/sale", produces = "application/json")
     public ResponseEntity<OperationData<?>> getSale(
-            @RequestParam(required = false) String id,
+            @RequestParam(required = false) Integer id,
             @RequestParam(required = false) String uniqueName,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) boolean isDeleted
     ) throws Exception {
-        UUID uuid = UtilsOperation.convertStringToUUID(id);
-        FindItemByParameterCommand find = FindItemByParameterCommand.builder()
-                .id(uuid).name(name).uniqueKey(uniqueName).isDeleted(isDeleted)
-                .build();
+        FindItemByParameterCommand find = FindItemByParameterCommand.builder().id(id).build();
         return new ResponseEntity<>(saleService.findRegister(find), HttpStatus.OK);
     }
 

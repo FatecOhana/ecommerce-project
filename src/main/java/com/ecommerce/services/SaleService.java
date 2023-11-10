@@ -17,8 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -109,12 +108,29 @@ public class SaleService implements UniqueRegisterOperationsTemplateV2<Sale> {
     public OperationData<?> findRegister(FindItemByParameterCommand find) throws Exception {
         logger.info("Get Register...");
 
-        throw new NotImplementedException();
+        Sale sale = null;
+        if (!UtilsValidation.isNull(find.getId())) {
+            sale = saleRepository.findById(find.getId()).orElseThrow(() -> new NotFoundException(
+                    String.format("not found uniqueUser with id=[%s]", find.getId())
+            ));
+        }
 
-        /*
+        List<Sale> values = new ArrayList<>();
+        if (UtilsValidation.isNull(sale)) {
+            values = saleRepository.findAll();
+        }
+
+        if (!UtilsValidation.isNull(sale)) {
+            values.add(sale);
+        } else if (UtilsValidation.isNullOrEmpty(values)) {
+            throw new NotFoundException(String.format(
+                    "not found values in database to combination id=[%s], name=[%s], uniqueKey=[%s]",
+                    find.getId(), find.getName(), find.getUniqueKey()
+            ));
+        }
+
         logger.info("Finished Get Register...");
-        return new OperationData<>(new HashSet<>(), null);
-        */
+        return new OperationData<>(new HashSet<>(values), null);
     }
 
     @Override

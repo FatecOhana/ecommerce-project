@@ -8,7 +8,7 @@ import java.util.UUID;
 @Builder
 @Getter
 public class FindItemByParameterCommand {
-    private final UUID id;
+    private final Integer id;
     private final String name;
     private final String uniqueKey;
     private final Object type;

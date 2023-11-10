@@ -1,27 +1,22 @@
 package com.ecommerce.restendpoints;
 
-import com.ecommerce.database.models.entities.SaleItem;
 import com.ecommerce.dto.OperationData;
-import com.ecommerce.dto.Payload;
 import com.ecommerce.dto.SaleDTO;
 import com.ecommerce.dto.SingleItemPayload;
 import com.ecommerce.dto.command.DeleteItemCommand;
 import com.ecommerce.dto.command.FindItemByParameterCommand;
 import com.ecommerce.dto.command.UpsertItemCommand;
-import com.ecommerce.dto.command.UpsertItemsCommand;
 import com.ecommerce.services.SaleService;
 import com.ecommerce.utils.UtilsOperation;
 import com.ecommerce.utils.UtilsValidation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,49 +34,7 @@ public class SaleRestEndpoint {
 
     // TODO: Create example object not in hardcode
     @Operation(summary = "Create or Update Sales values",
-            description = "If you pass the ID and there is a Sales in the corresponding database, it will be updated",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    examples = {
-                            @ExampleObject(
-                                    name = "Student body",
-                                    description = "student body example to upsert register",
-                                    value = """
-                                            {
-                                                "data": {
-                                                    "name": "Gabriel Olae",
-                                                    "identifierName": "GAB_OL4e",
-                                                    "isDeleted": false,
-                                                    "saleType": "ESTUDANTE",
-                                                    "contactNumber": "115984928470",
-                                                    "email": "gabriel@email.com",
-                                                    "password": "gabriel852109712",
-                                                    "documentType": "CPF",
-                                                    "documentValue": "12346578901"
-                                                }
-                                            }"""
-                            ),
-                            @ExampleObject(
-                                    name = "Enterprise body",
-                                    description = "enterprise body example to upsert register",
-                                    value = """
-                                            {
-                                                "data": {
-                                                    "name": "Nest",
-                                                    "identifierName": "NEST_ENTERPRISE",
-                                                    "isDeleted": false,
-                                                    "saleType": "EMPRESA",
-                                                    "contactNumber": "119284928470",
-                                                    "contactEmail": "nestRecruiter@email.com",
-                                                    "email": "nestCorp@email.com",
-                                                    "password": "nest852109712",
-                                                    "documentType": "CNPJ",
-                                                    "documentValue": "123465789010001"
-                                                }
-                                            }"""
-                            )
-                    }
-            ))
+            description = "If you pass the ID and there is a Sales in the corresponding database, it will be updated"
     )
     @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Sales Created or Updated", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))

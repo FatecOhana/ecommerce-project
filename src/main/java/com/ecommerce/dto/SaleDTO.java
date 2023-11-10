@@ -11,7 +11,6 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class SaleDTO {
     private Integer id;
 

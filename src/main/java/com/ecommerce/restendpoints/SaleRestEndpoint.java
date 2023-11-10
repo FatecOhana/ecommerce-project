@@ -51,9 +51,9 @@ public class SaleRestEndpoint {
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
     @DeleteMapping(value = "api/v1/sale", produces = "application/json", consumes = "application/json")
     public ResponseEntity<OperationData<?>> softDeleteSale(
-            @RequestBody SingleItemPayload<UUID> salePayload
+            @RequestBody SingleItemPayload<Integer> salePayload
     ) throws Exception {
-        DeleteItemCommand command = DeleteItemCommand.builder().id(UtilsValidation.ifNull(salePayload, new SingleItemPayload<UUID>()).getData()).build();
+        DeleteItemCommand command = DeleteItemCommand.builder().id(UtilsValidation.ifNull(salePayload, new SingleItemPayload<Integer>()).getData()).build();
         return new ResponseEntity<>(saleService.softDeleteRegister(command), HttpStatus.OK);
     }
 

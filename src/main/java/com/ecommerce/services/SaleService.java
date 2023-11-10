@@ -85,7 +85,12 @@ public class SaleService implements UniqueRegisterOperationsTemplateV2<Sale> {
 
     @Override
     public OperationData<UUID> softDeleteRegister(DeleteItemCommand command) throws Exception {
-        throw new NotImplementedException();
+        logger.info("Delete Register...");
+
+        saleRepository.deleteById(command.getId());
+
+        logger.info("Finished Delete Register...");
+        return new OperationData<>();
     }
 
     @Override

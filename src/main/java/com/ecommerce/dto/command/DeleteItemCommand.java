@@ -8,5 +8,5 @@ import java.util.UUID;
 @Builder
 @Getter
 public class DeleteItemCommand {
-    private final UUID id;
+    private final Integer id;
 }

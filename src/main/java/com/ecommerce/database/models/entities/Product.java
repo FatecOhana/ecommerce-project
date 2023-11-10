@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,4 +38,6 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
+    @OneToMany(targetEntity = SaleItem.class, mappedBy = "productId")
+    private Set<SaleItem> sales;
 }

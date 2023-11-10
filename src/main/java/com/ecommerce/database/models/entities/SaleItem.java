@@ -20,7 +20,7 @@ public class SaleItem {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(table = "product")
+    @ManyToOne(targetEntity = Product.class, optional = false, cascade = CascadeType.ALL)
     private Integer productId;
 
     @ManyToOne(targetEntity = SaleItem.class, optional = false)

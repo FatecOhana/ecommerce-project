@@ -7,16 +7,16 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -34,5 +34,8 @@ public class Customer {
     private Date birthdate;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+
+    @OneToMany(targetEntity = Sale.class, mappedBy = "customerId")
+    private Set<Sale> sales;
 
 }

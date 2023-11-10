@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,10 +17,11 @@ import java.time.LocalDateTime;
 @Table(name = "sale")
 public class Sale {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @ManyToOne(targetEntity = Customer.class, optional = false, cascade = CascadeType.ALL)
     private Integer customerId;
     private Integer status;
 
@@ -43,4 +45,6 @@ public class Sale {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @OneToMany(targetEntity = SaleItem.class,fetch = FetchType.EAGER)
+    private Set<SaleItem> saleItems;
 }

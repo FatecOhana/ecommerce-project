@@ -20,8 +20,12 @@ public class SaleItem {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(table = "product")
     private Integer productId;
+
+    @ManyToOne(targetEntity = SaleItem.class, optional = false)
     private Integer saleId;
+
     private Integer amount;
     private Float discount;
     private Float unityPrice;

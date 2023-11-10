@@ -32,7 +32,6 @@ public class SaleRestEndpoint {
         this.saleService = saleService;
     }
 
-    // TODO: Create example object not in hardcode
     @Operation(summary = "Create or Update Sales values",
             description = "If you pass the ID and there is a Sales in the corresponding database, it will be updated"
     )
@@ -71,25 +70,12 @@ public class SaleRestEndpoint {
         return new ResponseEntity<>(saleService.findRegister(find), HttpStatus.OK);
     }
 
-    // TODO ALLOW ONLY FOR MASTER ADMIN
     @Operation(summary = "Get all sale values in database", description = "This method is only allowed for debug")
     @ApiResponses(value = @ApiResponse(responseCode = "200", description = "All Sales Registers", content = @Content(
             mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
     @GetMapping(value = "api/v1/sale/all", produces = "application/json")
     public ResponseEntity<OperationData<?>> getAllSale() throws Exception {
         return new ResponseEntity<>(saleService.findAllRegister(), HttpStatus.OK);
-    }
-
-    @Operation(summary = "Get all Sale Jobs", description = "if SaleType is EMPRESA, all candidatures for the company " +
-            "will be displayed. But if SaleType is ESTUDANTE, all candidatures of student will be displayed")
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "All Sale candidatures", content = @Content(
-            mediaType = "application/json", schema = @Schema(implementation = OperationData.class))))
-    @GetMapping(value = "api/v1/sale/job", produces = "application/json")
-    public ResponseEntity<OperationData<?>> getAllSaleCandidatures(
-            @RequestParam(required = false) String id, @RequestParam(required = false) String uniqueName,
-            @RequestParam(required = false) String name, @RequestParam(required = false) boolean isDeleted
-    ) throws Exception {
-        throw new NotImplementedException("Not implemented getAllSaleCandidatures");
     }
 
 }
